@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Home from './containers/Home';
 import Signin from './containers/Signin';
 import Signup from './containers/Signup';
+import PrivateRoutes from './components/HOC';
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
  <Router>
   <Layout>
    <Routes>
-     <Route path='/' exact element={<Home />} />
+     <PrivateRoutes path='/' exact element={<Home />} />
      <Route path='/signup' element={<Signup />} />
      <Route path='/signin' element={<Signin />} />
    </Routes>
