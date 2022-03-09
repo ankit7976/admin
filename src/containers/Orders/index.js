@@ -2,14 +2,14 @@ import React from 'react'
 import Layout from '../../components/Layout'
 
 
-const Home = () => {
+const Orders = () => {
   return (
    
     <Layout sidebar>
-   <h1>Dashboard</h1>
+   <h1>Orders</h1>
     
     </Layout>
   )
 }
 
-export default Home
+export default Orders

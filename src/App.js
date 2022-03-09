@@ -1,10 +1,11 @@
 import React,{useEffect,Fragment} from 'react'
 import { BrowserRouter as Router, Route, Routes  } from 'react-router-dom';
 import './App.css';
-import Layout from './components/Layout';
 import Home from './containers/Home';
 import Signin from './containers/Signin';
 import Signup from './containers/Signup';
+import Product from './containers/Product'
+import Orders from './containers/Orders'
 import PrivateRoute from './components/HOC';
 import { isUserLoggedIn } from './actions/auth.action';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,6 +31,15 @@ const auth = useSelector(state => state.auth)
    <Route exact path='/' element={<PrivateRoute/>}>
       <Route exact path='/' element={<Home/>}/>
    </Route>
+
+   <Route exact path='/product' element={<PrivateRoute/>}>
+      <Route exact path='/product' element={<Product />}/>
+   </Route>
+
+   <Route exact path='/order' element={<PrivateRoute/>}>
+      <Route exact path='/order' element={<Orders />}/>
+   </Route>
+   
    
      <Route path='/signup' element={<Signup />} />
      <Route path='/signin' element={<Signin />} />
