@@ -9,9 +9,15 @@ const Layout = (props) => {
     <>
          <Header />
          {props.sidebar ? 
+
+
+
+
           <Container fluid>
+
+            
           <Row>
-            <Col md={2} className="sidebar">
+            {/* <Col md={2} className="sidebar">
               
               <ul>
                 <li><NavLink to={'/'}>Home</NavLink></li>
@@ -22,7 +28,7 @@ const Layout = (props) => {
               </ul>
               
               
-              </Col>
+              </Col> */}
             <Col md={10} style={{marginLeft:'auto'}}>{props.children}</Col>
           </Row>
         </Container> :  props.children
