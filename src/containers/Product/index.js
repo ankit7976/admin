@@ -6,8 +6,7 @@ const Products = () => {
   return (
    
     <Layout sidebar>
-   <h1>Products</h1>
-    
+       <h1>Products</h1>
     </Layout>
   )
 }

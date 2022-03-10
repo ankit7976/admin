@@ -9,6 +9,7 @@ import Orders from './containers/Orders'
 import PrivateRoute from './components/HOC';
 import { isUserLoggedIn } from './actions/auth.action';
 import { useDispatch, useSelector } from 'react-redux';
+import Category from './containers/category';
 
 
 function App() {
@@ -38,6 +39,10 @@ const auth = useSelector(state => state.auth)
 
    <Route exact path='/order' element={<PrivateRoute/>}>
       <Route exact path='/order' element={<Orders />}/>
+   </Route>
+
+   <Route exact path='/category' element={<PrivateRoute/>}>
+      <Route exact path='/category' element={<Category />}/>
    </Route>
    
    
