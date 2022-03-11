@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Form, Button,  } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
+import { Navigate,NavLink } from 'react-router-dom'
 import { signup } from '../../actions/user.action'
 import Input from '../../components/UI/Input'
 
@@ -30,12 +30,22 @@ const Signup = () => {
 
   }
   return (
-    <Container>
-      <Row style={{ marginTop: '50px' }}>
-        <Col md={{ span: 6, offset: 3 }}>
-          <Form onSubmit={handelSignup}>
-            <Row>
-              <Col md={6}>
+
+<div class="sign-inup">
+    <div class="container d-flex align-items-center justify-content-center form-height pt-24px pb-24px">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-10">
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <div class="ec-brand"><a href="index.html" title="Ekka"><img class="ec-brand-icon"
+                                    src="assets/img/logo/logo-login.png" alt="" /></a></div>
+                    </div>
+                    <div class="card-body p-5">
+                        <h4 class="text-dark mb-5">Sign Up</h4>
+                        <form onSubmit={handelSignup}>
+                            <div class="row">
+                      
+             
                 <Input
                   label="Firstname"
                   type="text"
@@ -44,9 +54,9 @@ const Signup = () => {
                   onChange={(e) => { setFirstname(e.target.value) }}
                   errorMsg=""
                 />
-              </Col>
+             
 
-              <Col md={6}>
+             
                 <Input
                   label="Lastname"
                   type="text"
@@ -55,8 +65,7 @@ const Signup = () => {
                   onChange={(e) => { setlastname(e.target.value) }}
                   errorMsg=""
                 />
-              </Col>
-            </Row>
+             
 
             <Input
               label="Email"
@@ -75,15 +84,24 @@ const Signup = () => {
               onChange={(e) => { setpassword(e.target.value) }}
               errorMsg=""
             />
+                                <div class="col-md-12">
+                                 
+                                    <button type="submit" class="btn btn-primary btn-block mb-4">Sign Up</button>
+                                    <p class="sign-upp">Already have an account? <NavLink class="text-blue"
+                                            to={"/signin"}>Sign in</NavLink></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div>
 
 
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+    
   )
 }
 

@@ -577,7 +577,7 @@ progress {
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -24979,3 +24979,13 @@ div.dataTables_wrapper div.dataTables_filter {
   border-radius: 15px;
 }
 /*# sourceMappingURL=ekka.css.map */
+
+
+.innerCtg li ul{
+  padding-left: 40px !important;
+  display: block;
+}
+
+.innerCtg li{
+  list-style: disc;
+}
