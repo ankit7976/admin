@@ -11,12 +11,26 @@ const initalState = {
 const buildNewCategory = (parentId,categories,category)=>{
 
     let myCategory = [];
+
+if(parentId == undefined){
+    return [
+        ...categories,{
+            _id:category._id,
+            name:category.name,
+            slug:category.slug,
+            parentId:category.parentId,
+            children:category.children
+        }
+
+    ]
+}
+
     for(let cat of categories){
 
         if(cat._id == parentId){
             myCategory.push({
                 ...cat,
-                children: cat.children && cat.children.length > 0 ? buildNewCategory(parentId, [  ...cat.children, {
+                children: cat.children ? buildNewCategory(parentId, [  ...cat.children, {
                     _id:category._id,
                     name:category.name,
                     slug:category.slug,
@@ -28,7 +42,7 @@ const buildNewCategory = (parentId,categories,category)=>{
         }else{
             myCategory.push({
                 ...cat,
-                children: cat.children && cat.children.length > 0 ? buildNewCategory(parentId,cat.children,category) : []
+                children: cat.children ? buildNewCategory(parentId,cat.children,category) : []
             })
         }
        

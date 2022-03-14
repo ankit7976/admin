@@ -10,6 +10,9 @@ import PrivateRoute from './components/HOC';
 import { isUserLoggedIn } from './actions/auth.action';
 import { useDispatch, useSelector } from 'react-redux';
 import Category from './containers/category';
+import Create from './containers/Product/create';
+import { getAllCategory } from './actions';
+import { getinitialData } from './actions/initaldata.action';
 
 
 function App() {
@@ -21,6 +24,8 @@ const auth = useSelector(state => state.auth)
     if(!auth.authenticate){
       dispatch(isUserLoggedIn())
     }
+
+    dispatch(getinitialData())
    
   },[]);
   return (
@@ -35,6 +40,9 @@ const auth = useSelector(state => state.auth)
 
    <Route exact path='/product' element={<PrivateRoute/>}>
       <Route exact path='/product' element={<Product />}/>
+   </Route>
+   <Route exact path='/product/create' element={<PrivateRoute/>}>
+      <Route exact path='/product/create' element={<Create />}/>
    </Route>
 
    <Route exact path='/order' element={<PrivateRoute/>}>

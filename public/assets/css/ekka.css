@@ -5532,6 +5532,10 @@ textarea.form-control-lg {
     margin: 1.75rem auto;
   }
 
+  .modal-90w{
+    max-width: 1170px;
+  }
+
   .modal-dialog-scrollable {
     height: calc(100% - 3.5rem);
   }
@@ -24981,11 +24985,20 @@ div.dataTables_wrapper div.dataTables_filter {
 /*# sourceMappingURL=ekka.css.map */
 
 
-.innerCtg li ul{
-  padding-left: 40px !important;
-  display: block;
+.innerCtg ul{
+  padding-left: 50px;
 }
 
 .innerCtg li{
   list-style: disc;
+}
+
+.single-product-cover,.single-nav-thumb{
+  display: flex;
+}
+
+.card-wrapper .card-container .card-top {
+  overflow: hidden;
+  border-radius: 10px;
+  height: 213px;
 }

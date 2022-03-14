@@ -4,6 +4,7 @@ import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCategory, getAllCategory } from '../../actions/category.action'
 import Layout from '../../components/Layout'
+import AppModel from '../../components/Model/Model'
 import Input from '../../components/UI/Input'
 
 
@@ -36,16 +37,14 @@ const Category = () => {
 
   const category = useSelector(state => state.category)
 
-  useEffect(() => {
-    dispatch(getAllCategory())
-  }, [])
+
 
   const randerCategories = (categories) => {
 
     const myCategories = [];
     for (let category of categories) {
       myCategories.push(
-        <li key={category._id}>
+        <li key={category.name}>
           {category.name}
           {category.children.length > 0 ? (<ul>{randerCategories(category.children)}</ul>) : null}
         </li>
@@ -61,7 +60,7 @@ const Category = () => {
     for (let category of categories) {
       options.push({ value: category._id, name: category.name });
       if (category.children.length > 0) {
-         createCategoryList(category.children, options)
+        createCategoryList(category.children, options)
       }
     }
     return options;
@@ -493,8 +492,8 @@ const Category = () => {
         <Row>
           <Col>
             <ul className='innerCtg'>
-              {randerCategories(category.categories)} 
-              
+              {randerCategories(category.categories)}
+
             </ul>
           </Col>
         </Row>
@@ -502,41 +501,38 @@ const Category = () => {
 
       </Container>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
 
-          <Input
-            value={categoryName}
-            onChange={(e) => setCategoryname(e.target.value)}
-            placeholder="enter category name"
-            type="text"
 
-          />
 
-          <select className='form-control' value={parentcategoryId} onChange={(e) => setParentcategoryId(e.target.value)}>
-            <option>Select category</option>
-            {createCategoryList(category.categories).map(option => <option value={option.value}>{option.name}</option>)}
-          </select>
+      <AppModel
 
-          <Input
+        show={show}
+        handleClose={handleClose}
+        modalTitel="create category"
 
-            onChange={handelCategoryimage}
-            type="file"
-          />
+      >
 
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        <Input
+          value={categoryName}
+          onChange={(e) => setCategoryname(e.target.value)}
+          placeholder="enter category name"
+          type="text"
+
+        />
+
+        <select className='form-control' value={parentcategoryId} onChange={(e) => setParentcategoryId(e.target.value)}>
+          <option>Select category</option>
+          {createCategoryList(category.categories).map(option => <option value={option.value}>{option.name}</option>)}
+        </select>
+
+        <Input
+
+          onChange={handelCategoryimage}
+          type="file"
+        />
+
+      </AppModel>
+
     </Layout>
   )
 }
