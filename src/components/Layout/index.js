@@ -14,41 +14,41 @@ const Layout = (props) => {
 
 
         {props.sidebar ?
-          <div class="wrapper">
+          <div className="wrapper">
 
-            <div class="ec-left-sidebar ec-bg-sidebar">
-              <div id="sidebar" class="sidebar ec-sidebar-footer">
-                <div class="ec-brand"><a href="index.html" title="Ekka"><img class="ec-brand-icon"
+            <div className="ec-left-sidebar ec-bg-sidebar">
+              <div id="sidebar" className="sidebar ec-sidebar-footer">
+                <div className="ec-brand"><a href="index.html" title="Ekka"><img className="ec-brand-icon"
                   src="./assets/img/logo/ec-site-logo.png" alt="" /> <span
-                    class="ec-brand-name text-truncate">Ekka</span></a></div>
-                <div class="ec-navigation" data-simplebar>
-                  <ul class="nav sidebar-inner" id="sidebar-menu">
+                    className="ec-brand-name text-truncate">Ekka</span></a></div>
+                <div className="ec-navigation" data-simplebar>
+                  <ul className="nav sidebar-inner" id="sidebar-menu">
                     <li>
-                      <NavLink class="sidenav-item-link" to={"/"}><i
-                        class="mdi mdi-view-dashboard-outline"></i> <span
-                          class="nav-text">Dashboard</span></NavLink>
+                      <NavLink className="sidenav-item-link" to={"/"}><i
+                        className="mdi mdi-view-dashboard-outline"></i> <span
+                          className="nav-text">Dashboard</span></NavLink>
 
                     </li>
 
 
 
                     <li>
-                      <NavLink class="sidenav-item-link" to={"/category"}><i
-                        class="mdi mdi-dns-outline"></i> <span
-                          class="nav-text">Category</span></NavLink>
+                      <NavLink className="sidenav-item-link" to={"/category"}><i
+                        className="mdi mdi-dns-outline"></i> <span
+                          className="nav-text">Category</span></NavLink>
 
                     </li>
 
                     <li>
-                      <NavLink class="sidenav-item-link" to={"/product"}><i
-                        class="mdi mdi-palette-advanced"></i> <span
-                          class="nav-text">Product</span></NavLink>
+                      <NavLink className="sidenav-item-link" to={"/product"}><i
+                        className="mdi mdi-palette-advanced"></i> <span
+                          className="nav-text">Product</span></NavLink>
 
                     </li>
                     <li>
-                      <NavLink class="sidenav-item-link" to={"/order"}><i
-                        class="mdi mdi-cart"></i> <span
-                          class="nav-text">Order</span></NavLink>
+                      <NavLink className="sidenav-item-link" to={"/order"}><i
+                        className="mdi mdi-cart"></i> <span
+                          className="nav-text">Order</span></NavLink>
 
                     </li>
 

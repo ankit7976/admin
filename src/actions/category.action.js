@@ -39,7 +39,18 @@ export const addCategory = (form)=>{
                 payload:res.data.error})
         }
     }
+}
 
 
-
+export const updateCategory = (form)=>{
+    return async (dispatch)=>{
+        dispatch({type:getcategoryConstant.ADD_NEW_CATEGORY_REQUEST})
+        const res = await axios.post('/category/update',form)
+        if(res.status === 201){
+         return true;
+     
+        }else{
+          console.log(res)
+        }
+    }
 }

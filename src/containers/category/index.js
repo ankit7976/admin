@@ -2,10 +2,15 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCategory, getAllCategory } from '../../actions/category.action'
+import { addCategory, getAllCategory, updateCategory } from '../../actions/category.action'
 import Layout from '../../components/Layout'
 import AppModel from '../../components/Model/Model'
 import Input from '../../components/UI/Input'
+import CheckboxTree from 'react-checkbox-tree';
+import { IoIosCheckbox, IoIosCheckboxOutline, IoIosArrowForward, IoIosArrowDown } from 'react-icons/io'
+
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+
 
 
 const Category = () => {
@@ -15,6 +20,11 @@ const Category = () => {
   const [categoryName, setCategoryname] = useState('');
   const [parentcategoryId, setParentcategoryId] = useState('');
   const [categoryImage, setcategoryImage] = useState('');
+  const [expanded, setExpanded] = useState([]);
+  const [checked, setChecked] = useState([]);
+  const [updateCategoryModel, setUpdateCategoryModel] = useState(false)
+  const [expandedArray, setExpandedArray] = useState([])
+  const [checkedArray, setcheckedArray] = useState([])
 
   const handleClose = () => {
 
@@ -37,20 +47,18 @@ const Category = () => {
 
   const category = useSelector(state => state.category)
 
-
-
   const randerCategories = (categories) => {
 
     const myCategories = [];
     for (let category of categories) {
       myCategories.push(
-        <li key={category.name}>
-          {category.name}
-          {category.children.length > 0 ? (<ul>{randerCategories(category.children)}</ul>) : null}
-        </li>
+        {
+          label: category.name,
+          value: category._id,
+          children: category.children.length > 0 && randerCategories(category.children)
+        }
       )
     }
-
     return myCategories
 
   }
@@ -58,7 +66,7 @@ const Category = () => {
 
   const createCategoryList = (categories, options = []) => {
     for (let category of categories) {
-      options.push({ value: category._id, name: category.name });
+      options.push({ value: category._id, name: category.name, parentId: category.parentId });
       if (category.children.length > 0) {
         createCategoryList(category.children, options)
       }
@@ -71,412 +79,160 @@ const Category = () => {
     setcategoryImage(e.target.files[0])
   }
 
+  const UpdateCategory = () => {
+    setUpdateCategoryModel(true)
+    const categories = createCategoryList(category.categories)
+    const checkArray = [];
+    const expandedArray = [];
+    checked.length > 0 && checked.forEach((categoryId, index) => {
+      const category = categories.find((category, _index) => categoryId == category.value)
+      category && checkArray.push(category)
+    })
+    expanded.length > 0 && expanded.forEach((categoryId, index) => {
+      const category = categories.find((category, _index) => categoryId == category.value)
+      category && expandedArray.push(category)
+    })
+
+    setcheckedArray(checkArray)
+    setExpandedArray(expandedArray)
+    console.log({ checked, expanded, categories, checkArray, expandedArray })
+  }
+
+
+  const handelCategoryInput = (key, value, index, type) => {
+    if (type == 'checked') {
+      const updatedCheckArray = checkedArray.map((item, _index) => index == _index ? { ...item, [key]: value } : item)
+      setcheckedArray(updatedCheckArray)
+    } else if (type == 'expanded') {
+      const updateexpandedArray = expandedArray.map((item, _index) => index == _index ? { ...item, [key]: value } : item)
+      setExpandedArray(updateexpandedArray)
+    }
+  }
+
+  const updateCategoriesForm = ()=>{
+   const form = new FormData()
+    expandedArray.forEach((item,index)=>{
+      form.append('_id', item.value)
+      form.append('name', item.name)
+      form.append('parentId', item.parentId ? item.parentId : "")
+      form.append('type', item.type)
+    })
+
+    checkedArray.forEach((item,index)=>{
+      form.append('_id', item.value)
+      form.append('name', item.name)
+      form.append('parentId', item.parentId ? item.parentId : "")
+      form.append('type', item.type)
+    })
+
+    dispatch(updateCategory(form)).then((result)=>{
+      if(result) return dispatch(getAllCategory())
+    })
+    setUpdateCategoryModel(false)
+   // updateCategory
+  }
+
+  const randerUpdateCategoryModel = ()=>{
+    return (
+      <AppModel
+
+      show={updateCategoryModel}
+      handleClose={updateCategoriesForm}
+      modalTitel="Update category"
+      dialogClassName="modal-90w"
+
+    >
+
+      <Row>
+        <Col>
+
+          <label>Expanded</label>
+
+        </Col>
+      </Row>
+      {
+        expandedArray.length > 0 &&
+        expandedArray.map((item, index) =>
+          <Row>
+            <Col >
+              <Input
+                value={item.name}
+                onChange={(e) => handelCategoryInput('name', e.target.value, index, 'expanded')}
+                placeholder="enter category name"
+                type="text"
+
+              />
+            </Col>
+
+            <Col>
+              <select className='form-control' value={item.parentId} onChange={(e) => handelCategoryInput('parentId', e.target.value, index, 'expanded')}>
+                <option>Select category</option>
+                {createCategoryList(category.categories).map(option => <option value={option.value}>{option.name}</option>)}
+              </select>
+            </Col>
+
+            <Col>
+              <select className='form-control'>
+                <option>Select category</option>
+                <option>Store</option>
+                <option>Product</option>
+                <option>Page</option>
+              </select>
+
+
+            </Col>
+          </Row>
+
+        )
+      }
+
+      <h6>Checked Category</h6>
+
+      {
+        checkedArray.length > 0 &&
+        checkedArray.map((item, index) =>
+          <Row>
+            <Col >
+              <Input
+                value={item.name}
+                onChange={(e) => handelCategoryInput('name', e.target.value, index, 'checked')}
+                placeholder="enter category name"
+                type="text"
+
+              />
+            </Col>
+
+            <Col>
+              <select className='form-control' value={item.parentId} onChange={(e) => handelCategoryInput('parentId', e.target.value, index, 'checked')}>
+                <option>Select category</option>
+                {createCategoryList(category.categories).map(option => <option value={option.value}>{option.name}</option>)}
+              </select>
+            </Col>
+
+            <Col>
+              <select className='form-control'>
+                <option>Select category</option>
+                <option>Store</option>
+                <option>Product</option>
+                <option>Page</option>
+              </select>
+
+
+            </Col>
+          </Row>
+
+        )
+      }
+
+    </AppModel>
+    )
+  }
+
   return (
 
     <Layout sidebar>
 
-      <div class="content">
-        <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
-          <h1>Sub Category</h1>
-          <p class="breadcrumbs"><span><a href="index.html">Home</a></span> <span><i
-            class="mdi mdi-chevron-right"></i></span>Sub Category</p>
-        </div>
-        <div class="row">
-          <div class="col-xl-4 col-lg-12">
-            <div class="ec-cat-list card card-default mb-24px">
-              <div class="card-body">
-                <div class="ec-cat-form">
-                  <h4>Add Sub Category</h4>
-                  <form>
-                    <div class="form-group row"><label for="text"
-                      class="col-12 col-form-label">Name</label>
-                      <div class="col-12"><input id="text" name="text"
-                        class="form-control here slug-title" /></div>
-                    </div>
-                    <div class="form-group row"><label for="slug"
-                      class="col-12 col-form-label">Slug</label>
-                      <div class="col-12"><input id="slug" name="slug"
-                        class="form-control here set-slug" /> <small>The “slug” is the
-                          URL-friendly version of the name. It is usually all lowercase
-                          and contains only letters, numbers, and hyphens.</small></div>
-                    </div>
-                    <div class="form-group row"><label class="col-12 col-form-label">Sort
-                      Description</label>
-                      <div class="col-12"><textarea id="sortdescription"
-                        name="sortdescription" cols="40" rows="2"
-                        class="form-control"></textarea></div>
-                    </div>
-                    <div class="form-group row"><label for="parent-category"
-                      class="col-12 col-form-label">Parent Category</label>
-                      <div class="col-12"><select id="parent-category" name="parent-category"
-                        class="custom-select">
-                        <option value="">Clothes</option>
-                        <option value="uncategorized">Footwear</option>
-                        <option value="new category">Jewellry</option>
-                        <option value="new category">Perfume</option>
-                        <option value="new category">Cosmatics</option>
-                        <option value="new category">Glasses</option>
-                        <option value="new category">Bags</option>
-                      </select></div>
-                    </div>
-                    <div class="form-group row"><label class="col-12 col-form-label">Full
-                      Description</label>
-                      <div class="col-12"><textarea id="fulldescription"
-                        name="fulldescription" cols="40" rows="4"
-                        class="form-control"></textarea></div>
-                    </div>
-                    <div class="form-group row"><label class="col-12 col-form-label">Product
-                      Tags <span>( Type and make comma to separate tags )</span></label>
-                      <div class="col-12"><input class="form-control" id="group_tag"
-                        name="group_tag" placeholder="" data-role="tagsinput" /></div>
-                    </div>
-                    <div class="row">
-                      <div class="col-12"><button name="submit" type="submit"
-                        class="btn btn-primary">Submit</button></div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-8 col-lg-12">
-            <div class="ec-cat-list card card-default">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table id="responsive-data-table" class="table">
-                    <thead>
-                      <tr>
-                        <th>Thumb</th>
-                        <th>Name</th>
-                        <th>Main Categories</th>
-                        <th>Product</th>
-                        <th>Total Sell</th>
-                        <th>Status</th>
-                        <th>Trending</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/clothes.png"
-                          alt="product image" /></td>
-                        <td>Winter Wear</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Clothes</span></span></td>
-                        <td>28</td>
-                        <td>2161</td>
-                        <td>ACTIVE</td>
-                        <td><span class="badge badge-success">Top</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/footwear.png"
-                          alt="product image" /></td>
-                        <td>Sport Shoes</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Footwear</span></span></td>
-                        <td>68</td>
-                        <td>5161</td>
-                        <td>ACTIVE</td>
-                        <td><span class="badge bg-primary">Medium</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/footwear.png"
-                          alt="product image" /></td>
-                        <td>Casual Shoes</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Footwear</span></span></td>
-                        <td>68</td>
-                        <td>5161</td>
-                        <td><span class="inactive">Inactive</span></td>
-                        <td><span class="badge badge-success">Top</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/clothes.png"
-                          alt="product image" /></td>
-                        <td>Jeans</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Clothes</span></span></td>
-                        <td>38</td>
-                        <td>1561</td>
-                        <td>ACTIVE</td>
-                        <td><span class="badge bg-primary">Medium</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/cosmetics.png"
-                          alt="product image" /></td>
-                        <td>Makeup kit</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Cosmatics</span></span></td>
-                        <td>18</td>
-                        <td>1061</td>
-                        <td>ACTIVE</td>
-                        <td><span class="badge bg-danger">Low</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/glasses.png"
-                          alt="product image" /></td>
-                        <td>Lenses</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Glasses</span></span></td>
-                        <td>82</td>
-                        <td>10061</td>
-                        <td><span class="inactive">Inactive</span></td>
-                        <td><span class="badge bg-primary">Medium</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/bag.png"
-                          alt="product image" /></td>
-                        <td>Shopping Bag</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Bags</span></span></td>
-                        <td>18</td>
-                        <td>3061</td>
-                        <td>ACTIVE</td>
-                        <td><span class="badge badge-success">Top</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/bag.png"
-                          alt="product image" /></td>
-                        <td>Gym Backpack</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Bags</span></span></td>
-                        <td>68</td>
-                        <td>5161</td>
-                        <td>ACTIVE</td>
-                        <td><span class="badge bg-primary">Medium</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/glasses.png"
-                          alt="product image" /></td>
-                        <td>Sunglasses</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Glasses</span></span></td>
-                        <td>82</td>
-                        <td>10061</td>
-                        <td><span class="inactive">Inactive</span></td>
-                        <td><span class="badge bg-primary">Medium</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/jewelry.png"
-                          alt="product image" /></td>
-                        <td>Earing</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Jewellry</span></span></td>
-                        <td>68</td>
-                        <td>5161</td>
-                        <td><span class="inactive">Inactive</span></td>
-                        <td><span class="badge badge-success">Top</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/perfume.png"
-                          alt="product image" /></td>
-                        <td>Deodorant</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Perfume</span></span></td>
-                        <td>38</td>
-                        <td>1561</td>
-                        <td>ACTIVE</td>
-                        <td><span class="badge bg-primary">Medium</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/clothes.png"
-                          alt="product image" /></td>
-                        <td>Tops</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Clothes</span></span></td>
-                        <td>38</td>
-                        <td>1561</td>
-                        <td>ACTIVE</td>
-                        <td><span class="badge bg-primary">Medium</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><img class="cat-thumb" src="assets/img/category/cosmetics.png"
-                          alt="product image" /></td>
-                        <td>Skin care kit</td>
-                        <td><span class="ec-sub-cat-list"><span
-                          class="ec-sub-cat-tag">Cosmatics</span></span></td>
-                        <td>18</td>
-                        <td>1061</td>
-                        <td>ACTIVE</td>
-                        <td><span class="badge bg-danger">Low</span></td>
-                        <td>
-                          <div class="btn-group"><button type="button"
-                            class="btn btn-outline-success">Info</button> <button
-                              type="button"
-                              class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                              data-bs-toggle="dropdown" aria-haspopup="true"
-                              aria-expanded="false" data-display="static"><span
-                                class="sr-only">Info</span></button>
-                            <div class="dropdown-menu"><a class="dropdown-item"
-                              href="#">Edit</a> <a class="dropdown-item"
-                                href="#">Delete</a></div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
 
 
       <Container>
@@ -490,18 +246,38 @@ const Category = () => {
         </Row>
 
         <Row>
-          <Col>
-            <ul className='innerCtg'>
-              {randerCategories(category.categories)}
+          <Col md={12}>
 
-            </ul>
+
+            <CheckboxTree
+              nodes={randerCategories(category.categories)}
+              checked={checked}
+              expanded={expanded}
+              onCheck={checked => setChecked(checked)}
+              onExpand={expanded => setExpanded(expanded)}
+              icons={{
+                check: <IoIosCheckbox />,
+                uncheck: <IoIosCheckboxOutline />,
+                halfCheck: <IoIosCheckboxOutline />,
+                expandClose: <IoIosArrowForward />,
+                expandOpen: <IoIosArrowDown />
+
+              }}
+            />
+
+
           </Col>
         </Row>
 
-
+        <Row>
+          <Col md={12}>
+            <button className='btn btn-danger'>Delete</button>
+            <button className='btn btn-warning' onClick={UpdateCategory}>Edit</button>
+          </Col>
+        </Row>
       </Container>
 
-
+     {randerUpdateCategoryModel()}
 
 
       <AppModel
