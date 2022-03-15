@@ -15,12 +15,16 @@ const AppModel = (props) => {
 
     </Modal.Body>
     <Modal.Footer>
-      <Button variant="secondary" onClick={props.handleClose}>
-        Close
+    {
+      props.buttons ? props.buttons.map(btn=> 
+        <Button variant={btn.color} onClick={btn.onClick}>
+        {btn.label}
       </Button>
-      <Button variant="primary" onClick={props.handleClose}>
+        ) : <Button variant="primary" onClick={props.handleClose}>
         Save Changes
       </Button>
+    }
+       
     </Modal.Footer>
   </Modal>
     

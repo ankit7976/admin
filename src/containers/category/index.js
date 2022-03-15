@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCategory, getAllCategory, updateCategory } from '../../actions/category.action'
+import { addCategory, getAllCategory, updateCategory,
+  deleteCategories as deleteCategoriesAction } from '../../actions/category.action'
 import Layout from '../../components/Layout'
 import AppModel from '../../components/Model/Model'
 import Input from '../../components/UI/Input'
@@ -25,6 +26,7 @@ const Category = () => {
   const [updateCategoryModel, setUpdateCategoryModel] = useState(false)
   const [expandedArray, setExpandedArray] = useState([])
   const [checkedArray, setcheckedArray] = useState([])
+  const [deleteCategoryModel,setDeleteCategoryModel] = useState(false)
 
   const handleClose = () => {
 
@@ -79,23 +81,29 @@ const Category = () => {
     setcategoryImage(e.target.files[0])
   }
 
-  const UpdateCategory = () => {
-    setUpdateCategoryModel(true)
-    const categories = createCategoryList(category.categories)
-    const checkArray = [];
-    const expandedArray = [];
-    checked.length > 0 && checked.forEach((categoryId, index) => {
-      const category = categories.find((category, _index) => categoryId == category.value)
-      category && checkArray.push(category)
-    })
-    expanded.length > 0 && expanded.forEach((categoryId, index) => {
-      const category = categories.find((category, _index) => categoryId == category.value)
-      category && expandedArray.push(category)
-    })
 
-    setcheckedArray(checkArray)
-    setExpandedArray(expandedArray)
-    console.log({ checked, expanded, categories, checkArray, expandedArray })
+const updateCheckedAndExpandedCategories = ()=>{
+
+  const categories = createCategoryList(category.categories)
+  const checkArray = [];
+  const expandedArray = [];
+  checked.length > 0 && checked.forEach((categoryId, index) => {
+    const category = categories.find((category, _index) => categoryId == category.value)
+    category && checkArray.push(category)
+  })
+  expanded.length > 0 && expanded.forEach((categoryId, index) => {
+    const category = categories.find((category, _index) => categoryId == category.value)
+    category && expandedArray.push(category)
+  })
+
+  setcheckedArray(checkArray)
+  setExpandedArray(expandedArray)
+  console.log({ checked, expanded, categories, checkArray, expandedArray })
+}
+
+  const UpdateCategory = () => {
+    updateCheckedAndExpandedCategories()
+    setUpdateCategoryModel(true)
   }
 
 
@@ -228,6 +236,58 @@ const Category = () => {
     )
   }
 
+
+  const deleteCategory = ()=>{
+    updateCheckedAndExpandedCategories()
+    setDeleteCategoryModel(true)
+  }
+
+  const deleteCategories = ()=>{
+    const checkIdsArray = checkedArray.map((item,index)=> ({_id:item.value}))
+    const expendIdsArray = expandedArray.map((item,index)=> ({_id:item.value}))
+    const IdsArray = expendIdsArray.concat(checkIdsArray)
+    dispatch(deleteCategoriesAction(IdsArray)).then(result=>{
+      if(result){
+        return dispatch(getAllCategory())
+      }
+    })
+
+    setDeleteCategoryModel(false)
+
+  }
+
+const randerDeleteCategoryModel = ()=>{
+
+return (
+  <AppModel
+  show={deleteCategoryModel}
+  handleClose={()=> setDeleteCategoryModel(false)}
+  modalTitel="Confirm"
+  buttons={[
+    {
+      label:'No',
+      color:'primary',
+      onClick: ()=> setDeleteCategoryModel(false)
+    },
+    {
+      label:'Yes',
+      color:'danger',
+      onClick: deleteCategories
+    }
+  ]}
+  >
+{/* <h3>Are you sure</h3> */}
+
+<span>Expanded</span>
+{expandedArray.map((item,index) => <h5 key={index}>{item.name}</h5> )}
+<br />
+<span>Checked</span>
+{checkedArray.map((item,index) => <h5 key={index}>{item.name}</h5> )}
+  </AppModel>
+)
+
+}
+
   return (
 
     <Layout sidebar>
@@ -271,14 +331,14 @@ const Category = () => {
 
         <Row>
           <Col md={12}>
-            <button className='btn btn-danger'>Delete</button>
+            <button className='btn btn-danger' onClick={deleteCategory}>Delete</button>
             <button className='btn btn-warning' onClick={UpdateCategory}>Edit</button>
           </Col>
         </Row>
       </Container>
 
      {randerUpdateCategoryModel()}
-
+     {randerDeleteCategoryModel()}
 
       <AppModel
 
