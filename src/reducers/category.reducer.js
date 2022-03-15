@@ -14,12 +14,13 @@ const buildNewCategory = (parentId,categories,category)=>{
 
 if(parentId == undefined){
     return [
-        ...categories,{
+        ...categories,
+        {
             _id:category._id,
             name:category.name,
             slug:category.slug,
             parentId:category.parentId,
-            children:category.children
+            children:[]
         }
 
     ]
