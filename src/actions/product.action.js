@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import axios from "../helpers"
 import { getcategoryConstant, getProductConstant } from "./constants";
 
@@ -10,6 +11,8 @@ export const addProduct = (form)=>{
         console.log(res.data)
         if(res.status === 201){
             console.log(res.data)
+
+            return true
            // dispatch({type:getProductConstant.ADD_NEW_PRODUCT_SUCCESS, 
            // payload:{category:res.data.category}
       //  });

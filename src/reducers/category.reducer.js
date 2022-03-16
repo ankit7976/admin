@@ -88,6 +88,24 @@ export default (state = initalState, action)=>{
             loading:true
         }
         break;
+
+        case getcategoryConstant.UPDATE_CATEGORY_REQUEST : state = {
+            ...state,
+            loading:true
+        }
+        break;
+
+        case getcategoryConstant.UPDATE_CATEGORY_SUCCESS : state = {
+            ...state,
+            loading:false
+        }
+        break;
+
+        case getcategoryConstant.UPDATE_CATEGORY_FAILURE : state = {
+            ...state,
+            error:action.payload.error
+        }
+        break;
     }
     return state
 }

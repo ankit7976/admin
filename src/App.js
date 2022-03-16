@@ -1,5 +1,5 @@
 import React,{useEffect,Fragment} from 'react'
-import { BrowserRouter as Router, Route, Routes  } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes  } from 'react-router-dom';
 import './App.css';
 import Home from './containers/Home';
 import Signin from './containers/Signin';
@@ -28,6 +28,7 @@ const auth = useSelector(state => state.auth)
     dispatch(getinitialData())
    
   },[]);
+
   return (
     <div className="App">
  <Router> 

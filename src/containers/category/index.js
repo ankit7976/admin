@@ -11,10 +11,12 @@ import CheckboxTree from 'react-checkbox-tree';
 import { IoIosCheckbox, IoIosCheckboxOutline, IoIosArrowForward, IoIosArrowDown } from 'react-icons/io'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+import RanderUpdateCategoryModel from './ChildModule/RanderUpdateCategoryModel'
+import RanderAddCategoriesModel from './ChildModule/RanderAddCategoryModel'
 
 
 
-const Category = () => {
+const Category = (props) => {
 
   const [show, setShow] = useState(false);
   const dispatch = useDispatch()
@@ -140,101 +142,9 @@ const updateCheckedAndExpandedCategories = ()=>{
    // updateCategory
   }
 
-  const randerUpdateCategoryModel = ()=>{
-    return (
-      <AppModel
 
-      show={updateCategoryModel}
-      handleClose={updateCategoriesForm}
-      modalTitel="Update category"
-      dialogClassName="modal-90w"
+ 
 
-    >
-
-      <Row>
-        <Col>
-
-          <label>Expanded</label>
-
-        </Col>
-      </Row>
-      {
-        expandedArray.length > 0 &&
-        expandedArray.map((item, index) =>
-          <Row>
-            <Col >
-              <Input
-                value={item.name}
-                onChange={(e) => handelCategoryInput('name', e.target.value, index, 'expanded')}
-                placeholder="enter category name"
-                type="text"
-
-              />
-            </Col>
-
-            <Col>
-              <select className='form-control' value={item.parentId} onChange={(e) => handelCategoryInput('parentId', e.target.value, index, 'expanded')}>
-                <option>Select category</option>
-                {createCategoryList(category.categories).map(option => <option value={option.value}>{option.name}</option>)}
-              </select>
-            </Col>
-
-            <Col>
-              <select className='form-control'>
-                <option>Select category</option>
-                <option>Store</option>
-                <option>Product</option>
-                <option>Page</option>
-              </select>
-
-
-            </Col>
-          </Row>
-
-        )
-      }
-
-      <h6>Checked Category</h6>
-
-      {
-        checkedArray.length > 0 &&
-        checkedArray.map((item, index) =>
-          <Row>
-            <Col >
-              <Input
-                value={item.name}
-                onChange={(e) => handelCategoryInput('name', e.target.value, index, 'checked')}
-                placeholder="enter category name"
-                type="text"
-
-              />
-            </Col>
-
-            <Col>
-              <select className='form-control' value={item.parentId} onChange={(e) => handelCategoryInput('parentId', e.target.value, index, 'checked')}>
-                <option>Select category</option>
-                {createCategoryList(category.categories).map(option => <option value={option.value}>{option.name}</option>)}
-              </select>
-            </Col>
-
-            <Col>
-              <select className='form-control'>
-                <option>Select category</option>
-                <option>Store</option>
-                <option>Product</option>
-                <option>Page</option>
-              </select>
-
-
-            </Col>
-          </Row>
-
-        )
-      }
-
-    </AppModel>
-    )
-  }
 
 
   const deleteCategory = ()=>{
@@ -246,13 +156,17 @@ const updateCheckedAndExpandedCategories = ()=>{
     const checkIdsArray = checkedArray.map((item,index)=> ({_id:item.value}))
     const expendIdsArray = expandedArray.map((item,index)=> ({_id:item.value}))
     const IdsArray = expendIdsArray.concat(checkIdsArray)
-    dispatch(deleteCategoriesAction(IdsArray)).then(result=>{
-      if(result){
-        return dispatch(getAllCategory())
-      }
-    })
+   
+    if(checkIdsArray.length > 0){
+      dispatch(deleteCategoriesAction(checkIdsArray)).then(result=>{
+        if(result){
+           dispatch(getAllCategory())
+          setDeleteCategoryModel(false)
+        }
+      })
+    }
 
-    setDeleteCategoryModel(false)
+   
 
   }
 
@@ -291,10 +205,7 @@ return (
   return (
 
     <Layout sidebar>
-
-
-
-
+ 
       <Container>
         <Row>
           <Col md={12}>
@@ -336,38 +247,38 @@ return (
           </Col>
         </Row>
       </Container>
+    
+      <RanderAddCategoriesModel
+    show={show}
+    handleClose={handleClose}
+    modalTitel="create category"
+        categoryName={categoryName}
+        setCategoryname={setCategoryname}
+        parentcategoryId={parentcategoryId}
+        setParentcategoryId={setParentcategoryId}
+        handelCategoryimage={handelCategoryimage}
+        CreateCategoriesList={createCategoryList(category.categories)}
+ 
+    />
 
-     {randerUpdateCategoryModel()}
+    <RanderUpdateCategoryModel
+     show={updateCategoryModel}
+     handleClose={updateCategoriesForm}
+     modalTitel="Update category"
+     dialogClassName="modal-90w"
+     CreateCategoriesList={createCategoryList(category.categories)}
+     handelCategoryInput={handelCategoryInput}
+     expandedArray={expandedArray}
+     checkedArray={checkedArray}
+    />
+
+
+    
+    
      {randerDeleteCategoryModel()}
 
-      <AppModel
 
-        show={show}
-        handleClose={handleClose}
-        modalTitel="create category"
-
-      >
-
-        <Input
-          value={categoryName}
-          onChange={(e) => setCategoryname(e.target.value)}
-          placeholder="enter category name"
-          type="text"
-
-        />
-
-        <select className='form-control' value={parentcategoryId} onChange={(e) => setParentcategoryId(e.target.value)}>
-          <option>Select category</option>
-          {createCategoryList(category.categories).map(option => <option value={option.value}>{option.name}</option>)}
-        </select>
-
-        <Input
-
-          onChange={handelCategoryimage}
-          type="file"
-        />
-
-      </AppModel>
+    
 
     </Layout>
   )

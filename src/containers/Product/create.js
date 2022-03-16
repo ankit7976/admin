@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { addProduct } from '../../actions/product.action';
 import Layout from '../../components/Layout'
 
@@ -47,7 +48,7 @@ const crateProducthandelr =()=>{
   for(let pic of productPictures){
     form.append('productPictures',pic)
   }
-  dispatch(addProduct(form));
+  dispatch(addProduct(form)) 
 }
 
   return (
