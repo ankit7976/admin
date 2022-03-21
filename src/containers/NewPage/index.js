@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { createPage } from '../../actions'
 import Layout from '../../components/Layout'
 import linearCategories from '../../helpers/linearCategories'
@@ -9,70 +9,70 @@ const NewPage = () => {
     const [title, setTitle] = useState('')
     const [categories, setCategories] = useState([])
     const category = useSelector(state => state.category)
-    const [categoryId,setCategoryId] = useState('');
-    const [type,setType] = useState('')
-    const [desc,setDesc] = useState('')
-    const [banners,setbanners] = useState([])
-    const [products,setProducts] = useState([])
+    const [categoryId, setCategoryId] = useState('');
+    const [type, setType] = useState('')
+    const [desc, setDesc] = useState('')
+    const [banners, setbanners] = useState([])
+    const [products, setProducts] = useState([])
     const dispatch = useDispatch()
     const page = useSelector(state => state.page)
     useEffect(() => {
         console.log('categories =>', categories)
         setCategories(linearCategories(category.categories))
-       
+
     }, [category])
 
-useEffect(()=>{
-    console.log(page)
-    if(page.loading){
+    useEffect(() => {
+        console.log(page)
+        if (page.loading) {
 
-    }
-},[page])
+        }
+    }, [page])
 
 
-    const onCategoryChange = (e)=>{
-   
-        const category = categories.find(cat=> cat.value == e.target.value)
-     
+    const onCategoryChange = (e) => {
+
+        const category = categories.find(cat => cat.value == e.target.value)
+
         setCategoryId(e.target.value)
         setType(category.type)
     }
 
     const handelBannerImage = (e) => {
         console.log(e)
-        setbanners([...banners,e.target.files[0]])
+        setbanners([...banners, e.target.files[0]])
     }
 
-    const handelProductImage = (e)=>{
+    const handelProductImage = (e) => {
         console.log(e)
-        setProducts([...products,e.target.files[0]])
+        setProducts([...products, e.target.files[0]])
     }
 
-    const SubmitpageForm = (e)=>{
-         //e.target.preventDefault();
+    const SubmitpageForm = (e) => {
+        //e.target.preventDefault();
         //  if(title === ""){
         //      alert('Tital is requird');
         //      return;
         //  }
         const form = new FormData();
-        form.append('title',title)
-        form.append('description',desc)
-        form.append('type',type)
-        form.append('category',categoryId)
-        banners.forEach((banners,index)=>{
-            form.append('banners',banners)
+        form.append('title', title)
+        form.append('description', desc)
+        form.append('type', type)
+        form.append('category', categoryId)
+        banners.forEach((banners, index) => {
+            form.append('banners', banners)
         })
-        products.forEach((product,index)=>{
-            form.append('products',product)
+        products.forEach((product, index) => {
+            form.append('products', product)
         })
         dispatch(createPage(form))
-        console.log(categoryId,title,desc,type,categoryId,banners,products)
+        console.log(categoryId, title, desc, type, categoryId, banners, products)
 
     }
 
 
- 
- 
+
+
 
     return (
         <Layout sidebar>
@@ -88,32 +88,28 @@ useEffect(()=>{
                                     <div className="col-lg-8">
                                         <div className="ec-vendor-img-upload">
                                             <div className="ec-vendor-main-img">
-                                                
-                                            <div id="bannerImages">
-                                            <div className="avatar-upload col-sm-12">
-                                                    <div className="avatar-edit">
-                                                        <input type="file" id="imageUpload" name="banners" onChange={handelBannerImage}
-                                                            className="ec-image-upload"
-                                                            accept=".png, .jpg, .jpeg" /><label htmlFor="imageUpload"><img style={{height:'200px'}}
-                                                                src="../assets/img/icons/edit.svg"
-                                                                className="svg_img header_svg" alt="edit" /></label></div>
-                                                    <div className="avatar-preview ec-preview">
-                                                        <div className="imagePreview ec-div-preview"><img style={{height:'200px'}}
-                                                            className="ec-image-preview"
-                                                            src="../assets/img/products/vender-upload-preview.jpg"
-                                                            alt="edit" /></div>
+
+                                                <div id="bannerImages">
+                                                    <div className="avatar-upload col-sm-12">
+                                                        <div className="avatar-edit">
+                                                            <input type="file" id="imageUpload" name="banners" onChange={handelBannerImage} 
+                                                                className="ec-image-upload"
+                                                                accept=".png, .jpg, .jpeg" multiple /><label htmlFor="imageUpload"><img style={{ height: '200px' }}
+                                                                    src="../assets/img/icons/edit.svg"
+                                                                    className="svg_img header_svg" alt="edit" /></label></div>
+                                                        <div className="avatar-preview ec-preview">
+                                                            <div className="imagePreview ec-div-preview"><img style={{ height: '200px' }}
+                                                                className="ec-image-preview"
+                                                                src="../assets/img/products/vender-upload-preview.jpg"
+                                                                alt="edit" /></div>
+                                                        </div>
                                                     </div>
-                                                </div>
 
                                                 </div>
-
-                                               
-
-                                          
 
 
                                                 <div className="thumb-upload-set col-sm-12">
-                                                    <div className="thumb-upload">
+                                                    <div className="thumb-upload" style={{ width: '48%' }}>
                                                         <div className="thumb-edit"><input type="file" name="products" onChange={handelProductImage}
                                                             id="thumbUpload01" className="ec-image-upload"
                                                             accept=".png, .jpg, .jpeg" /><label
@@ -128,7 +124,7 @@ useEffect(()=>{
                                                                 alt="edit" /></div>
                                                         </div>
                                                     </div>
-                                                    <div className="thumb-upload">
+                                                    <div className="thumb-upload" style={{ width: '48%' }}>
                                                         <div className="thumb-edit"><input type="file" name="products" onChange={handelProductImage}
                                                             id="thumbUpload02" className="ec-image-upload"
                                                             accept=".png, .jpg, .jpeg" /><label
@@ -143,7 +139,7 @@ useEffect(()=>{
                                                                 alt="edit" /></div>
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -171,7 +167,7 @@ useEffect(()=>{
 
                                                 <div className="col-md-12"><label className="form-label">Ful
                                                     Detail</label><textarea className="form-control" value={desc} onChange={(e) => setDesc(e.target.value)}
-                                                        rows="4"></textarea></div> 
+                                                        rows="4"></textarea></div>
 
 
 
@@ -179,7 +175,7 @@ useEffect(()=>{
                                                 <div className="col-md-12"><button type="button"
                                                     className="btn btn-primary" onClick={SubmitpageForm}>create product</button></div>
 
-                                                    
+
                                             </form>
                                         </div>
                                     </div>

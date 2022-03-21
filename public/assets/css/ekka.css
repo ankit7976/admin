@@ -25002,3 +25002,10 @@ div.dataTables_wrapper div.dataTables_filter {
   border-radius: 10px;
   height: 213px;
 }
+
+
+.single-nav-thumb img{
+  width: 100%;
+  border: solid 1px #ddd;
+  padding: 5px;
+}
