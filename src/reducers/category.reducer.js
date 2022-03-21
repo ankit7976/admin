@@ -19,6 +19,7 @@ if(parentId == undefined){
             _id:category._id,
             name:category.name,
             slug:category.slug,
+            type:category.type,
             parentId:category.parentId,
             children:[]
         }
@@ -34,6 +35,7 @@ if(parentId == undefined){
                 _id:category._id,
                 name:category.name,
                 slug:category.slug,
+                type:category.type,
                 parentId:category.parentId,
                 children:[]
 

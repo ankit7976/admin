@@ -6,6 +6,7 @@ import Signin from './containers/Signin';
 import Signup from './containers/Signup';
 import Product from './containers/Product'
 import Orders from './containers/Orders'
+import NewPage from './containers/NewPage'
 import PrivateRoute from './components/HOC';
 import { isUserLoggedIn } from './actions/auth.action';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,10 +54,15 @@ const auth = useSelector(state => state.auth)
    <Route exact path='/category' element={<PrivateRoute/>}>
       <Route exact path='/category' element={<Category />}/>
    </Route>
+
+   <Route exact path='/page' element={<PrivateRoute/>}>
+      <Route exact path='/page' element={<NewPage />}/>
+   </Route>
    
    
      <Route path='/signup' element={<Signup />} />
      <Route path='/signin' element={<Signin />} />
+    
    </Routes>
    </Fragment>
  </Router>

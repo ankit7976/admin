@@ -19,6 +19,8 @@ const RanderUpdateCategoryModel = (props)=>{
 
     } = props;
 
+    console.log({expandedArray,checkedArray})
+
     return (
       <AppModel
 
@@ -58,11 +60,12 @@ const RanderUpdateCategoryModel = (props)=>{
             </Col>
 
             <Col>
-              <select className='form-control'>
-                <option>Select category</option>
-                <option>Store</option>
-                <option>Product</option>
-                <option>Page</option>
+              <select className='form-control' value={item.type} 
+              onChange={(e)=> handelCategoryInput('type', e.target.value, index, 'expanded')}>
+                  <option value="">Select type</option>
+                <option value="Store">Store</option>
+                <option value="Product">Product</option>
+                <option value="Page">Page</option>
               </select>
 
 
@@ -96,11 +99,13 @@ const RanderUpdateCategoryModel = (props)=>{
             </Col>
 
             <Col>
-              <select className='form-control'>
-                <option>Select category</option>
-                <option>Store</option>
-                <option>Product</option>
-                <option>Page</option>
+              <select className='form-control' value={item.type} 
+              onChange={(e)=> handelCategoryInput('type', e.target.value, index, 'checked')}
+              >
+                <option value="">Select type</option>
+                <option value="Store">Store</option>
+                <option value="Product">Product</option>
+                <option value="Page">Page</option>
               </select>
 
 

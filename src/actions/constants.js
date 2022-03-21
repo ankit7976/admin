@@ -35,3 +35,10 @@ export const getProductConstant = {
     ADD_NEW_PRODUCT_FAILURE:"ADD_NEW_PRODUCT_FAILURE",
     
 }
+
+export const pageConstants = {
+   PAGE_CREATE_REQUEST:"PAGE_CREATE_REQUEST",
+   PAGE_CREATE_SUCCESS:"PAGE_CREATE_SUCCESS",
+   PAGE_CREATE_FAILURE:"PAGE_CREATE_FAILURE",
+    
+}

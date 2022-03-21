@@ -40,6 +40,13 @@ const Layout = (props) => {
                     </li>
 
                     <li>
+                      <NavLink className="sidenav-item-link" to={"/page"}><i
+                        className="mdi mdi-image-filter-none"></i> <span
+                          className="nav-text">Page</span></NavLink>
+
+                    </li>
+
+                    <li>
                       <NavLink className="sidenav-item-link" to={"/product"}><i
                         className="mdi mdi-palette-advanced"></i> <span
                           className="nav-text">Product</span></NavLink>
