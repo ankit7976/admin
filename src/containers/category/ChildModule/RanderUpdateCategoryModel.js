@@ -19,7 +19,11 @@ const RanderUpdateCategoryModel = (props)=>{
 
     } = props;
 
+<<<<<<< Updated upstream
     console.log({expandedArray,checkedArray})
+=======
+    console.log({checkedArray,expandedArray})
+>>>>>>> Stashed changes
 
     return (
       <AppModel
@@ -60,9 +64,17 @@ const RanderUpdateCategoryModel = (props)=>{
             </Col>
 
             <Col>
+<<<<<<< Updated upstream
               <select className='form-control' value={item.type} 
               onChange={(e)=> handelCategoryInput('type', e.target.value, index, 'expanded')}>
                   <option value="">Select type</option>
+=======
+              <select className='form-control'
+               value={item.type} 
+               onChange={(e) => handelCategoryInput('type', e.target.value, index, 'expanded')}
+              >
+                <option value="">Select Type</option>
+>>>>>>> Stashed changes
                 <option value="Store">Store</option>
                 <option value="Product">Product</option>
                 <option value="Page">Page</option>
@@ -99,10 +111,18 @@ const RanderUpdateCategoryModel = (props)=>{
             </Col>
 
             <Col>
+<<<<<<< Updated upstream
               <select className='form-control' value={item.type} 
               onChange={(e)=> handelCategoryInput('type', e.target.value, index, 'checked')}
               >
                 <option value="">Select type</option>
+=======
+              <select className='form-control'
+              value={item.type} 
+               onChange={(e) => handelCategoryInput('type', e.target.value, index, 'checked')}>
+               
+                <option value="">Select Type</option>
+>>>>>>> Stashed changes
                 <option value="Store">Store</option>
                 <option value="Product">Product</option>
                 <option value="Page">Page</option>

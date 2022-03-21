@@ -31,7 +31,6 @@ const Category = (props) => {
   const [deleteCategoryModel,setDeleteCategoryModel] = useState(false)
 
   const handleClose = () => {
-
     const form = new FormData();
     form.append('name', categoryName)
     form.append('parentId', parentcategoryId)
@@ -70,12 +69,19 @@ const Category = (props) => {
   
   const createCategoryList = (categories, options = []) => {
     for (let category of categories) {
+<<<<<<< Updated upstream
       options.push({ 
         value: category._id, 
         name: category.name, 
         parentId: category.parentId,
         type: category.type
       });
+=======
+      options.push({ value: category._id,
+         name: category.name,
+         parentId: category.parentId,
+        type: category.type });
+>>>>>>> Stashed changes
       if (category.children.length > 0) {
         createCategoryList(category.children, options)
       }
@@ -166,12 +172,12 @@ const updateCheckedAndExpandedCategories = ()=>{
       dispatch(deleteCategoriesAction(checkIdsArray)).then(result=>{
         if(result){
            dispatch(getAllCategory())
-          setDeleteCategoryModel(false)
+          setDeleteCategoryModel(false) 
         }
       })
     }
 
-   
+    setDeleteCategoryModel(false) 
 
   }
 
