@@ -2,15 +2,15 @@
 import axios from "../helpers";
 import { pageConstants } from "./constants";
 
-export const createPage = (user)=>{
-    console.log(user)
+export const createPage = (form)=>{
+    console.log(form)
     return async (dispatch) =>{
         dispatch({type:pageConstants.PAGE_CREATE_REQUEST})
      try{
 
-        const res = await axios.post('page/create', )
+        const res = await axios.post('/page/create', form)
 
-       if(res.status === 200){
+       if(res.status === 201){
         dispatch({
             type:pageConstants.PAGE_CREATE_SUCCESS,
             payload :{

@@ -25,10 +25,13 @@ const auth = useSelector(state => state.auth)
     if(!auth.authenticate){
       dispatch(isUserLoggedIn())
     }
+    if(auth.authenticate){
+      dispatch(getinitialData())
+    }
 
-    dispatch(getinitialData())
    
-  },[]);
+   
+  },[auth.authenticate]);
 
   return (
     <div className="App">

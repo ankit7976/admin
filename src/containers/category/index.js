@@ -69,19 +69,12 @@ const Category = (props) => {
   
   const createCategoryList = (categories, options = []) => {
     for (let category of categories) {
-<<<<<<< Updated upstream
       options.push({ 
         value: category._id, 
         name: category.name, 
         parentId: category.parentId,
         type: category.type
       });
-=======
-      options.push({ value: category._id,
-         name: category.name,
-         parentId: category.parentId,
-        type: category.type });
->>>>>>> Stashed changes
       if (category.children.length > 0) {
         createCategoryList(category.children, options)
       }

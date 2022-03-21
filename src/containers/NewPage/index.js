@@ -15,14 +15,25 @@ const NewPage = () => {
     const [banners,setbanners] = useState([])
     const [products,setProducts] = useState([])
     const dispatch = useDispatch()
+    const page = useSelector(state => state.page)
     useEffect(() => {
         console.log('categories =>', categories)
         setCategories(linearCategories(category.categories))
        
     }, [category])
 
+useEffect(()=>{
+    console.log(page)
+    if(page.loading){
+
+    }
+},[page])
+
+
     const onCategoryChange = (e)=>{
-        const category = categories.find(cat=> cat._id == e.target.value)
+   
+        const category = categories.find(cat=> cat.value == e.target.value)
+     
         setCategoryId(e.target.value)
         setType(category.type)
     }
@@ -48,8 +59,8 @@ const NewPage = () => {
         form.append('description',desc)
         form.append('type',type)
         form.append('category',categoryId)
-        banners.forEach((banner,index)=>{
-            form.append('banners',banner)
+        banners.forEach((banners,index)=>{
+            form.append('banners',banners)
         })
         products.forEach((product,index)=>{
             form.append('products',product)
@@ -60,6 +71,8 @@ const NewPage = () => {
     }
 
 
+ 
+ 
 
     return (
         <Layout sidebar>
@@ -72,10 +85,12 @@ const NewPage = () => {
                             </div>
                             <div className="card-body">
                                 <div className="row ec-vendor-uploads">
-                                    <div className="col-lg-12">
+                                    <div className="col-lg-8">
                                         <div className="ec-vendor-img-upload">
                                             <div className="ec-vendor-main-img">
-                                                <div className="avatar-upload col-sm-12">
+                                                
+                                            <div id="bannerImages">
+                                            <div className="avatar-upload col-sm-12">
                                                     <div className="avatar-edit">
                                                         <input type="file" id="imageUpload" name="banners" onChange={handelBannerImage}
                                                             className="ec-image-upload"
@@ -89,6 +104,14 @@ const NewPage = () => {
                                                             alt="edit" /></div>
                                                     </div>
                                                 </div>
+
+                                                </div>
+
+                                               
+
+                                          
+
+
                                                 <div className="thumb-upload-set col-sm-12">
                                                     <div className="thumb-upload">
                                                         <div className="thumb-edit"><input type="file" name="products" onChange={handelProductImage}
@@ -125,7 +148,7 @@ const NewPage = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-8">
+                                    <div className="col-lg-4">
                                         <div className="ec-vendor-upload-detail">
                                             <form className="row g-3">
                                                 <div className="col-md-6"><label for="inputEmail4"

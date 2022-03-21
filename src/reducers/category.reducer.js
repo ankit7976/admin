@@ -20,10 +20,7 @@ if(parentId == undefined){
             name:category.name,
             slug:category.slug,
             type:category.type,
-<<<<<<< Updated upstream
             parentId:category.parentId,
-=======
->>>>>>> Stashed changes
             children:[]
         }
 
@@ -40,7 +37,6 @@ if(parentId == undefined){
                 slug:category.slug,
                 type:category.type,
                 parentId:category.parentId,
-                type:category.type,
                 children:[]
 
             }
@@ -108,24 +104,6 @@ export default (state = initalState, action)=>{
         break;
 
         case getcategoryConstant.UPDATE_CATEGORY_FAILURE : state = {
-            ...state,
-            error:action.payload.error
-        }
-        break;
-
-        case getcategoryConstant.DELETE_CATEGORY_REQUEST : state = {
-            ...state,
-            loading:true
-        }
-        break;
-
-        case getcategoryConstant.DELETE_CATEGORY_SUCCESS : state = {
-            ...state,
-            loading:false
-        }
-        break;
-
-        case getcategoryConstant.DELETE_CATEGORY_FAILURE : state = {
             ...state,
             error:action.payload.error
         }
