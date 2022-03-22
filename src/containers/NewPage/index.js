@@ -31,11 +31,11 @@ const NewPage = () => {
 
 
     const onCategoryChange = (e) => {
-
         const category = categories.find(cat => cat.value == e.target.value)
-
         setCategoryId(e.target.value)
         setType(category.type)
+
+       
     }
 
     const handelBannerImage = (e) => {
@@ -49,15 +49,10 @@ const NewPage = () => {
     }
 
     const SubmitpageForm = (e) => {
-        //e.target.preventDefault();
-        //  if(title === ""){
-        //      alert('Tital is requird');
-        //      return;
-        //  }
+ 
         const form = new FormData();
         form.append('title', title)
         form.append('description', desc)
-        form.append('type', type)
         form.append('category', categoryId)
         banners.forEach((banners, index) => {
             form.append('banners', banners)
@@ -65,9 +60,10 @@ const NewPage = () => {
         products.forEach((product, index) => {
             form.append('products', product)
         })
+        form.append('type', type)
+        alert(type)
+        console.log(categoryId, title, desc,  categoryId, type, banners, products)
         dispatch(createPage(form))
-        console.log(categoryId, title, desc, type, categoryId, banners, products)
-
     }
 
 

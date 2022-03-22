@@ -63,9 +63,9 @@ const RanderUpdateCategoryModel = (props)=>{
               <select className='form-control' value={item.type} 
               onChange={(e)=> handelCategoryInput('type', e.target.value, index, 'expanded')}>
                   <option value="">Select type</option>
-                <option value="Store">Store</option>
-                <option value="Product">Product</option>
-                <option value="Page">Page</option>
+                <option value="store">Store</option>
+                <option value="product">Product</option>
+                <option value="page">Page</option>
               </select>
 
 
@@ -103,9 +103,9 @@ const RanderUpdateCategoryModel = (props)=>{
               onChange={(e)=> handelCategoryInput('type', e.target.value, index, 'checked')}
               >
                 <option value="">Select type</option>
-                <option value="Store">Store</option>
-                <option value="Product">Product</option>
-                <option value="Page">Page</option>
+                <option value="store">Store</option>
+                <option value="product">Product</option>
+                <option value="page">Page</option>
               </select>
 
 
