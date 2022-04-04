@@ -58,17 +58,13 @@ const Header = () => {
               <ul className="dropdown-menu dropdown-menu-right ec-dropdown-menu">
                 <li className="dropdown-header"><img src="assets/img/user/user.png" className="img-circle"
                   alt="User Image" />
-                  <div className="d-inline-block">John Deo <small className="pt-1"><a
+                  <div className="d-inline-block">{auth.user.fullName} <small className="pt-1"><a
                     
                     className="__cf_email__"
-                  >[email&#160;protected]</a></small>
+                  >{auth.user.email}</a></small>
                   </div>
                 </li>
-                <li><a href="user-profile.html"><i className="mdi mdi-account"></i> My Profile</a></li>
-                <li><a href="#"><i className="mdi mdi-email"></i> Message</a></li>
-                <li><a href="#"><i className="mdi mdi-diamond-stone"></i> Projects</a></li>
-                <li className="right-sidebar-in"><a><i
-                  className="mdi mdi-settings-outline"></i> Setting</a></li>
+               
                 <li className="dropdown-footer"><a onClick={logout}><i className="mdi mdi-logout"></i> Log
                   Out</a></li>  
               </ul>
