@@ -25009,3 +25009,16 @@ div.dataTables_wrapper div.dataTables_filter {
   border: solid 1px #ddd;
   padding: 5px;
 }
+
+
+
+.order-detail{
+  padding: 15px;
+  margin: 0px;
+}
+
+.order-detail h5{
+  font-weight: 700;
+  font-size: 16px;
+ 
+}

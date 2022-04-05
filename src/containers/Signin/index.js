@@ -21,7 +21,8 @@ const Signin = (props) => {
     const loginHandler = (e) => {
         e.preventDefault();
         const user = { email, password }
-
+        setError(auth.error)
+        console.log(error)
         dispatch(login(user))
     }
 
@@ -32,6 +33,7 @@ const Signin = (props) => {
 
       <div className='sign-inup'>
 
+ 
 
             <div className="container d-flex align-items-center justify-content-center form-height-login pt-24px pb-24px">
                 <div className="row justify-content-center">

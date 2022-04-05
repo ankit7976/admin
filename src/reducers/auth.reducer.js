@@ -34,7 +34,14 @@ export default (state = initalState,action)=>{
                 authenticating:false
             }
              break;
-
+             case authConstants.LOGIN_FAILURE:
+                state = {
+                    ...state,
+                    error:action.payload.error,
+                    authenticate:false,
+                    authenticating:true
+                }
+                 break;
              case authConstants.LOGOUT_REQUEST : 
              state = {
                  ...state,

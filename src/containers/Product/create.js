@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { addProduct } from '../../actions/product.action';
 import Layout from '../../components/Layout'
 
@@ -15,7 +15,7 @@ const Create = () => {
   const [categoryId, setCategoryId] = useState('');
   const [productPictures, setproductPictures] = useState('');
   
-
+let navigate = useNavigate();
 const dispatch = useDispatch()
   const category = useSelector(state => state.category)
 
@@ -48,7 +48,11 @@ const crateProducthandelr =()=>{
   for(let pic of productPictures){
     form.append('productPictures',pic)
   }
-  dispatch(addProduct(form)) 
+  dispatch(addProduct(form)) .then((result)=>{
+    if(result){
+      navigate('/product')
+    }
+  })
 }
 
   return (

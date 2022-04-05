@@ -34,13 +34,24 @@ const Orders = () => {
 
 
         <div class="card mt-4 trk-order">
-          <div>
-            {orderItem.items.map((item, index) => <h6 key={index}>{item.productId.name}</h6>)}
+          <div className='row order-detail'>
+          <div className='col-sm-4'>
+            <h6>Name</h6>
+          <span>  {orderItem.items.map((item, index) => <h5 key={index}>{item.productId.name}</h5>)}</span>
           </div>
-          <span>
-            {orderItem.totalAmount} :  {orderItem.paymentType} :  {orderItem.paymentStatus}
-          </span>
-
+          <div className='col-sm-2'> 
+          <h6>Amount</h6>
+           <span> {orderItem.totalAmount}   </span>
+          </div>
+          <div className='col-sm-2'> 
+          <h6>paymentType</h6>
+         {orderItem.paymentType} 
+          </div>
+          <div className='col-sm-2'> 
+          <h6>paymentStatus</h6>
+          <span>{orderItem.paymentStatus}</span>
+          </div>
+          </div>
           <div
             class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
             <div class="w-150 text-center py-1 px-2"><span class="text-medium">
@@ -75,26 +86,7 @@ const Orders = () => {
                   <h4 class="step-title">{status.type} <span> : {fromDate(status.date)}</span></h4>
                 </div>
               ))}
-              {/*              
-
-              <div class={`step ${status.isCompleted ? "completed" : '' }` }>
-                <div class="step-icon-wrap">
-                  <div class="step-icon"><i class="mdi mdi-gift"></i></div>
-                </div>
-                <h4 class="step-title">Product Dispatched</h4>
-              </div>
-              <div class={`step ${status.isCompleted ? "completed" : '' }` }>
-                <div class="step-icon-wrap">
-                  <div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
-                </div>
-                <h4 class="step-title">On Delivery</h4>
-              </div>
-              <div class={`step ${status.isCompleted ? "completed" : '' }` }>
-                <div class="step-icon-wrap">
-                  <div class="step-icon"><i class="mdi mdi-hail"></i></div>
-                </div>
-                <h4 class="step-title">Product Delivered</h4>
-              </div> */}
+             
 
 
             </div>
