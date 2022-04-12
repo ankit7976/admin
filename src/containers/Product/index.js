@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { getinitialData } from '../../actions/initaldata.action'
 import Layout from '../../components/Layout'
 import AppModel from '../../components/Model/Model'
 import { genratefileName } from '../../urlConfig'
@@ -12,6 +13,10 @@ const Products = () => {
   const [show, setShow] = useState(false);
   const [productDtl, setproductDtl] = useState(null)
   const product = useSelector(state => state.product)
+
+  useEffect(()=>{
+    getinitialData();
+  },[])
 
   const handleClose = () => {
     setShow(false)
